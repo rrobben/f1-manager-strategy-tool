@@ -7,6 +7,11 @@ import Table, { IndeterminateCheckbox } from "./Table";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const TRACKS = ["bahrain", "saudi_arabia", "australia", "emilia_romagna", "miami"];
+const getTyreBadge = (tyre) => {
+  if (tyre === "S") return "danger";
+  if (tyre === "M") return "warning";
+  return "secondary";
+};
 
 function App() {
   const chartRef = React.useRef();
@@ -104,6 +109,10 @@ function App() {
       {
         header: "strategy",
         accessorFn: (row) => row[0],
+        cell: ({ getValue }) =>
+          getValue()
+            .split("-")
+            .map((v) => <span className={`badge tyre-badge rounded-pill mr-1 bg-${getTyreBadge(v)}`}>{v}</span>),
       },
       {
         header: "time",
@@ -127,17 +136,20 @@ function App() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-2">
+        <div className="col-12 col-lg-4 col-xl-2">
           <select className="form-select my-2" value={track} onChange={(e) => setTrack(e.target.value)}>
             {TRACKS.map((t) => (
               <option key={t} value={t}>
-                {t.replace("_", " ")}
+                {t
+                  .split("_")
+                  .map((w) => w[0].toUpperCase() + w.slice(1))
+                  .join(" ")}
               </option>
             ))}
           </select>
           <Table data={strategies} columns={columns} defaultSort={[{ id: "time", desc: false }]} setSelectedRows={setSelectedRows} />
         </div>
-        <div className="col-10">
+        <div className="col-12 col-lg-8 col-xl-10">
           <canvas id="chart"></canvas>
         </div>
       </div>
