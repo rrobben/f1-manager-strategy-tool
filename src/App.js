@@ -17,7 +17,7 @@ function App() {
   const chartRef = React.useRef();
   const [strategies, setStrategies] = React.useState([]);
   const [selectedRows, setSelectedRows] = React.useState([]);
-  const [track, setTrack] = React.useState("bahrain");
+  const [track, setTrack] = React.useState(new URLSearchParams(window.location.search).get("track") || "bahrain");
 
   React.useEffect(() => {
     setStrategies(getStrategies(track));
@@ -142,7 +142,7 @@ function App() {
     <div className="container-fluid">
       <div className="row">
         <div className="col-12 col-lg-4 col-xl-3">
-          <select className="form-select my-2" value={track} onChange={(e) => setTrack(e.target.value)}>
+          <select className="form-select my-2" value={track} onChange={(e) => (window.location.search = `?track=${e.target.value}`)}>
             {TRACKS.map((t) => (
               <option key={t} value={t}>
                 {t
