@@ -6,7 +6,21 @@
   margin-right: 0.25rem !important;
 }
 
-.tyre-badge {
+.tyre-badge.h {
   padding-left: 5px !important;
   padding-right: 5px !important;
+}
+
+.tyre-badge.m {
+  padding-left: 4.5px !important;
+  padding-right: 4.5px !important;
+}
+
+.tyre-badge.s {
+  padding-left: 5.5px !important;
+  padding-right: 5.5px !important;
+}
+
+.vertical-align-middle {
+  vertical-align: middle;
 }

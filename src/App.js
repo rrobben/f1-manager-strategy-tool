@@ -87,6 +87,7 @@ function App() {
               checked: table.getIsAllRowsSelected(),
               indeterminate: table.getIsSomeRowsSelected(),
               onChange: table.getToggleAllRowsSelectedHandler(),
+              className: "vertical-align-middle",
             }}
           />
         ),
@@ -97,6 +98,7 @@ function App() {
                 checked: row.getIsSelected(),
                 indeterminate: row.getIsSomeSelected(),
                 onChange: row.getToggleSelectedHandler(),
+                className: "vertical-align-middle",
               }}
             />
           </div>
@@ -109,7 +111,7 @@ function App() {
           getValue()
             .split("-")
             .map((v, i) => (
-              <span key={`${v}.${i}`} className={`badge tyre-badge rounded-pill mr-1 bg-${getTyreBadge(v)}`}>
+              <span key={`${v}.${i}`} className={`badge tyre-badge ${v.toLowerCase()} rounded-pill mr-1 bg-${getTyreBadge(v)}`}>
                 {v}
               </span>
             )),
@@ -122,6 +124,7 @@ function App() {
           moment(getValue() * 1000)
             .utc()
             .format("H:mm:ss"),
+        classes: "text-end",
       },
       {
         header: "Optimal Pit laps",
