@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/strategy-tool/static/css/main.ccec144c.css",
+    "main.js": "/strategy-tool/static/js/main.f2b5cb23.js",
+    "static/js/787.f4e9cd34.chunk.js": "/strategy-tool/static/js/787.f4e9cd34.chunk.js",
+    "index.html": "/strategy-tool/index.html",
+    "main.ccec144c.css.map": "/strategy-tool/static/css/main.ccec144c.css.map",
+    "main.f2b5cb23.js.map": "/strategy-tool/static/js/main.f2b5cb23.js.map",
+    "787.f4e9cd34.chunk.js.map": "/strategy-tool/static/js/787.f4e9cd34.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ccec144c.css",
+    "static/js/main.f2b5cb23.js"
+  ]
+}
