@@ -124,7 +124,7 @@ function App() {
           moment(getValue() * 1000)
             .utc()
             .format("H:mm:ss"),
-        classes: "text-end",
+        classes: "text-end font-family-monospace",
       },
       {
         header: "Optimal Pit laps",
@@ -132,7 +132,7 @@ function App() {
           let total = 0;
           return row[2].map((r) => (total += r));
         },
-        classes: "text-end",
+        classes: "text-end font-family-monospace",
       },
     ],
     []
