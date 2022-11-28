@@ -24,6 +24,11 @@ const TRACK_PRESET = {
     ["h", "m", "m"],
     ["m", "h", "s"],
   ],
+  spain: [
+    ["m", "m", "s"],
+    ["s", "m", "s"],
+    ["h", "m", "s"],
+  ],
 };
 
 const getPossibleStrategies = (track, laps, tires) => {
@@ -83,6 +88,11 @@ const TRACK_TIRE_PARAMS = {
     lapTime: { h: 92.848, m: 92.42, s: 91.985 },
     competitiveLaps: { h: 32, m: 23, s: 15.5 },
     averageDeg: { h: 0.07, m: 0.1, s: 0.16 },
+  },
+  spain: {
+    lapTime: { h: 82.607, m: 82.275, s: 81.868 },
+    competitiveLaps: { h: 40, m: 34, s: 25 },
+    averageDeg: { h: 0.04, m: 0.05, s: 0.07 },
   },
 };
 
@@ -210,6 +220,7 @@ const TRACK_PIT_LOSS = {
   australia: 19,
   emilia_romagna: 25,
   miami: 22,
+  spain: 19,
 };
 
 const getTotal = (stints, laps, stintArrays, track, tires) => {
@@ -226,6 +237,7 @@ export const TRACK_LAPS = {
   australia: 58,
   emilia_romagna: 63,
   miami: 57,
+  spain: 66,
 };
 
 const getStrategies = (track, laps, tires) => {

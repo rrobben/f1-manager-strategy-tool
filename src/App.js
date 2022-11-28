@@ -26,7 +26,7 @@ const TIRES_AVAILABLE = {
   ],
 };
 
-const TRACKS = ["bahrain", "saudi_arabia", "australia", "emilia_romagna", "miami"];
+const TRACKS = ["bahrain", "saudi_arabia", "australia", "emilia_romagna", "miami", "spain"];
 const getTyreBadge = (tyre, deg) => {
   let mainColor = "secondary";
 
