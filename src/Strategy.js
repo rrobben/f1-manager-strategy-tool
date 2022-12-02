@@ -108,8 +108,16 @@ const getStints = (laps, track) => {
       }
       let degFactor;
 
-      if (lapstartingDeg >= 75) {
+      if (lapstartingDeg >= 90) {
+        degFactor = 0.1;
+      } else if (lapstartingDeg >= 85) {
         degFactor = 0.25;
+      } else if (lapstartingDeg >= 80) {
+        degFactor = 0.5;
+      } else if (lapstartingDeg >= 75) {
+        degFactor = 0.75;
+      } else if (lapstartingDeg > 60) {
+        degFactor = 1;
       } else if (lapstartingDeg > 50) {
         degFactor = 1.25;
       } else if (lapstartingDeg > 40) {
