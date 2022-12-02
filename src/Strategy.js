@@ -70,7 +70,7 @@ const TRACK_TIRE_PARAMS = {
   saudi_arabia: {
     lapTime: { h: 92.968, m: 92.637, s: 92.351 },
     competitiveLaps: { h: 31, m: 22, s: 14.75 },
-    averageDeg: { h: 0.05, m: 0.08, s: (1.089 / 0.733) * 0.08 },
+    averageDeg: { h: 0.05, m: 0.084, s: 0.12 },
   },
   australia: {
     lapTime: { h: 83.229, m: 82.805, s: 82.442 },
@@ -79,8 +79,8 @@ const TRACK_TIRE_PARAMS = {
   },
   emilia_romagna: {
     lapTime: { h: 79.289, m: 79.022, s: 78.741 },
-    competitiveLaps: { h: 46, m: 47, s: 22 },
-    averageDeg: { h: 0.03, m: 0.04, s: 0.07 },
+    competitiveLaps: { h: 46, m: 33, s: 22 },
+    averageDeg: { h: 0.032, m: 0.045, s: 0.07 },
   },
   miami: {
     lapTime: { h: 92.848, m: 92.42, s: 91.985 },
