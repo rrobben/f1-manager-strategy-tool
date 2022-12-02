@@ -18,10 +18,15 @@ function App() {
   const [strategies, setStrategies] = React.useState([]);
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [track, setTrack] = React.useState(new URLSearchParams(window.location.search).get("gp") || "bahrain");
+  const [fastestTime, setFastestTime] = React.useState();
 
   React.useEffect(() => {
     setStrategies(getStrategies(track));
   }, [track]);
+
+  React.useEffect(() => {
+    setFastestTime(strategies.map((s) => s[1]).sort()[0]);
+  }, [strategies]);
 
   React.useEffect(() => {
     if (strategies.length > 0) initChart();
@@ -117,14 +122,15 @@ function App() {
             )),
       },
       {
-        header: "Time",
+        header: "Gap",
         id: "time",
-        accessorFn: (row) => row[1],
+        accessorFn: (row) => (fastestTime ? row[1] - fastestTime : 0),
         cell: ({ getValue }) =>
           moment(getValue() * 1000)
             .utc()
-            .format("H:mm:ss"),
+            .format("m:ss"),
         classes: "text-end font-family-monospace",
+        headerClasses: "text-end",
       },
       {
         header: "Optimal Pit laps",
@@ -133,9 +139,10 @@ function App() {
           return row[2].map((r) => (total += r));
         },
         classes: "text-end font-family-monospace",
+        headerClasses: "text-end",
       },
     ],
-    []
+    [fastestTime]
   );
 
   return (
@@ -152,7 +159,7 @@ function App() {
               </option>
             ))}
           </select>
-          <Table data={strategies} columns={columns} defaultSort={[{ id: "time", desc: false }]} setSelectedRows={setSelectedRows} />
+          <Table key={fastestTime} data={strategies} columns={columns} defaultSort={[{ id: "time", desc: false }]} setSelectedRows={setSelectedRows} />
         </div>
         <div className="col-12 col-lg-8 col-xl-9">
           <h4 className="text-center">Expected lap times (ignoring pit stop time loss, fuel and track evolution)</h4>
