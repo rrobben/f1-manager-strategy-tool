@@ -27,9 +27,8 @@ const Table = ({ data, columns, defaultSort, setSelectedRows }) => {
   });
 
   return (
-    <div className="p-2">
-      <div className="h-2" />
-      <table>
+    <div className="w-100">
+      <table className="w-100">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -39,7 +38,7 @@ const Table = ({ data, columns, defaultSort, setSelectedRows }) => {
                     {header.isPlaceholder ? null : (
                       <div
                         {...{
-                          className: header.column.getCanSort() ? "cursor-pointer select-none" : "",
+                          className: `${header.column.columnDef.headerClasses || ""} ${header.column.getCanSort() ? "cursor-pointer select-none" : ""}`,
                           onClick: header.column.getToggleSortingHandler(),
                         }}
                       >
