@@ -162,7 +162,7 @@ function App() {
           <Table key={fastestTime} data={strategies} columns={columns} defaultSort={[{ id: "time", desc: false }]} setSelectedRows={setSelectedRows} />
         </div>
         <div className="col-12 col-lg-8 col-xl-9">
-          <h4 className="text-center">Expected lap times (ignoring pit stop time loss, fuel and track evolution)</h4>
+          <h4 className="text-center mt-3">Expected lap times (ignoring pit stop time loss, fuel and track evolution)</h4>
           <canvas id="chart"></canvas>
         </div>
       </div>
