@@ -2,15 +2,41 @@ import { Chart, color } from "./Chart";
 import moment from "moment";
 import React from "react";
 import "./App.css";
-import getStrategies from "./Strategy";
+import getStrategies, { TRACK_LAPS } from "./Strategy";
 import Table, { IndeterminateCheckbox } from "./Table";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./bootstrap.scss";
+import update from "immutability-helper";
+
+const TIRES_AVAILABLE = {
+  s: [
+    { cond: 100, available: true },
+    { cond: 100, available: true },
+    { cond: 100, available: false },
+    { cond: 100, available: false },
+    { cond: 100, available: false },
+  ],
+  m: [
+    { cond: 100, available: true },
+    { cond: 100, available: true },
+    { cond: 100, available: false },
+  ],
+  h: [
+    { cond: 100, available: true },
+    { cond: 100, available: false },
+  ],
+};
 
 const TRACKS = ["bahrain", "saudi_arabia", "australia", "emilia_romagna", "miami"];
-const getTyreBadge = (tyre) => {
-  if (tyre === "S") return "danger";
-  if (tyre === "M") return "warning";
-  return "secondary";
+const getTyreBadge = (tyre, deg) => {
+  let mainColor = "secondary";
+
+  if (tyre === "S") {
+    mainColor = "danger";
+  } else if (tyre === "M") {
+    mainColor = "warning";
+  }
+
+  return mainColor + (deg < 100 ? " light" : "");
 };
 
 function App() {
@@ -19,13 +45,31 @@ function App() {
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [track, setTrack] = React.useState(new URLSearchParams(window.location.search).get("gp") || "bahrain");
   const [fastestTime, setFastestTime] = React.useState();
+  const [laps, setLaps] = React.useState(TRACK_LAPS[track]);
+  const [tires, setTires] = React.useState(TIRES_AVAILABLE);
 
   React.useEffect(() => {
-    setStrategies(getStrategies(track));
-  }, [track]);
+    setStrategies(
+      getStrategies(
+        track,
+        laps,
+        Object.fromEntries(
+          Object.keys(tires)
+            .map((k) => [
+              k,
+              tires[k]
+                .filter((t) => t.available && t.cond > 0)
+                .map((t) => t.cond)
+                .sort((a, b) => b - a),
+            ])
+            .filter((t) => t[1].length)
+        )
+      )
+    );
+  }, [track, laps, tires]);
 
   React.useEffect(() => {
-    setFastestTime(strategies.map((s) => s[1]).sort()[0]);
+    setFastestTime(strategies.map((s) => s.time).sort((a, b) => a - b)[0]);
   }, [strategies]);
 
   React.useEffect(() => {
@@ -37,12 +81,12 @@ function App() {
     if (chartRef.current) chartRef.current.destroy();
 
     const data = {
-      labels: [...Array(strategies[0][3].length + 1).keys()].slice(1),
+      labels: [...Array(strategies[0].laptimes.length + 1).keys()].slice(1),
       datasets: strategies
-        .filter((d, i) => selectedRows.includes(i))
+        .filter((d) => selectedRows.includes(d.id))
         .map((d, i) => ({
-          label: d[0],
-          data: d[3],
+          label: d.id,
+          data: d.laptimes,
           backgroundColor: color(i),
           borderColor: color(i),
         })),
@@ -111,20 +155,18 @@ function App() {
       },
       {
         header: "Strategy",
-        accessorFn: (row) => row[0],
+        accessorFn: ({ strategy }) => strategy.split("-").map((s) => s.split(".")),
         cell: ({ getValue }) =>
-          getValue()
-            .split("-")
-            .map((v, i) => (
-              <span key={`${v}.${i}`} className={`badge tyre-badge ${v.toLowerCase()} rounded-pill mr-1 bg-${getTyreBadge(v)}`}>
-                {v}
-              </span>
-            )),
+          getValue().map((v, i) => (
+            <span key={`${v[0]}.${i}`} className={`badge tyre-badge ${v[0].toLowerCase()} rounded-pill mr-1 bg-${getTyreBadge(v[0], v[1])}`}>
+              {v[0]}
+            </span>
+          )),
       },
       {
         header: "Gap",
         id: "time",
-        accessorFn: (row) => (fastestTime ? row[1] - fastestTime : 0),
+        accessorFn: ({ time }) => (fastestTime ? time - fastestTime : 0),
         cell: ({ getValue }) =>
           moment(getValue() * 1000)
             .utc()
@@ -134,9 +176,9 @@ function App() {
       },
       {
         header: "Optimal Pit laps",
-        accessorFn: (row) => {
+        accessorFn: ({ pit = [] }) => {
           let total = 0;
-          return row[2].map((r) => (total += r));
+          return pit.map((r) => (total += r));
         },
         classes: "text-end font-family-monospace",
         headerClasses: "text-end",
@@ -144,6 +186,28 @@ function App() {
     ],
     [fastestTime]
   );
+
+  const handleLapsChange = (e) => {
+    setLaps(e.target.value === "" ? "" : Math.max(Math.min(TRACK_LAPS[track], e.target.value), 1));
+  };
+
+  const handleTireChange = (tyre, idx, attr, val) => {
+    if (attr === "cond") {
+      val = Math.max(Math.min(100, val), 1);
+    }
+
+    setTires(
+      update(tires, {
+        [tyre]: {
+          [idx]: {
+            [attr]: {
+              $set: val,
+            },
+          },
+        },
+      })
+    );
+  };
 
   return (
     <div className="container-fluid">
@@ -159,7 +223,31 @@ function App() {
               </option>
             ))}
           </select>
-          <Table key={fastestTime} data={strategies} columns={columns} defaultSort={[{ id: "time", desc: false }]} setSelectedRows={setSelectedRows} />
+          <label className="w-100 mb-3">
+            Laps remaining
+            <input type="number" min={1} max={TRACK_LAPS[track]} value={laps} onChange={handleLapsChange} className="form-control" />
+          </label>
+          {Object.keys(tires).flatMap((k) =>
+            (tires[k] || []).map((t, i) => (
+              <div className="row mb-1">
+                <div className="col-6">
+                  <label className="w-100 vertical-align-sub" key={`${k}.${i}`}>
+                    <input
+                      type="checkbox"
+                      className="form-check-inline mr-1 vertical-align-middle"
+                      checked={t.available}
+                      onChange={(e) => handleTireChange(k, i, "available", e.target.checked)}
+                    />{" "}
+                    <span className={`badge tyre-badge ${k.toLowerCase()} rounded-pill mr-1 bg-${getTyreBadge(k.toUpperCase(), t.cond)}`}>{k.toUpperCase()}</span>
+                  </label>
+                </div>
+                <div className="col-6">
+                  <input type="number" min={1} max={100} className="form-control" value={t.cond} onChange={(e) => handleTireChange(k, i, "cond", e.target.value)} />
+                </div>
+              </div>
+            ))
+          )}
+          <Table key={fastestTime} data={strategies} columns={columns} defaultSort={[{ id: "time", desc: false }]} setSelectedRows={setSelectedRows} selectedRows={selectedRows} />
         </div>
         <div className="col-12 col-lg-8 col-xl-9">
           <h4 className="text-center mt-3">Expected lap times (ignoring pit stop time loss, fuel and track evolution)</h4>

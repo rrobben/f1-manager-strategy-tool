@@ -28,3 +28,11 @@
 .font-family-monospace {
   font-family: monospace;
 }
+
+label {
+  font-weight: bold;
+}
+
+.vertical-align-sub {
+  vertical-align: sub;
+}
