@@ -143,7 +143,8 @@ const getStints = (laps, track, tires) => {
   let stintArrays = {};
 
   Object.keys(tires).forEach((k) => {
-    const [laptimes, stintArray, degs] = getStintTimes(laps, startingDeg, lapTime[k], averageDeg[k], percentageDeg[k], 0, lapTime[k]);
+    const [laptimes, stintArray, stintDegs] = getStintTimes(laps, startingDeg, lapTime[k], averageDeg[k], percentageDeg[k], 0, lapTime[k]);
+    const degs = [[startingDeg, 0], ...stintDegs];
     lapTimes[`${k}.${startingDeg}`] = [lapTime[k], ...laptimes];
     stintArrays[`${k}.${startingDeg}`] = [lapTime[k], ...stintArray];
 

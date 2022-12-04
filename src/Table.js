@@ -9,7 +9,7 @@ const Table = ({ data, columns, defaultSort, setSelectedRows, selectedRows }) =>
   const [rowSelection, setRowSelection] = React.useState({});
 
   React.useEffect(() => {
-    setSelectedRows(Object.keys(rowSelection).map((idx) => data[parseInt(idx)].id));
+    setSelectedRows(Object.keys(rowSelection).map((idx) => data[parseInt(idx)]?.id));
   }, [rowSelection]);
 
   const table = useReactTable({
