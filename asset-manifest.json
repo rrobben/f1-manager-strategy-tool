@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/f1-manager-strategy-tool/static/css/main.767cec47.css",
-    "main.js": "/f1-manager-strategy-tool/static/js/main.1bd6def0.js",
+    "main.js": "/f1-manager-strategy-tool/static/js/main.a10537e7.js",
     "static/js/787.bff971da.chunk.js": "/f1-manager-strategy-tool/static/js/787.bff971da.chunk.js",
     "index.html": "/f1-manager-strategy-tool/index.html",
     "main.767cec47.css.map": "/f1-manager-strategy-tool/static/css/main.767cec47.css.map",
-    "main.1bd6def0.js.map": "/f1-manager-strategy-tool/static/js/main.1bd6def0.js.map",
+    "main.a10537e7.js.map": "/f1-manager-strategy-tool/static/js/main.a10537e7.js.map",
     "787.bff971da.chunk.js.map": "/f1-manager-strategy-tool/static/js/787.bff971da.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.767cec47.css",
-    "static/js/main.1bd6def0.js"
+    "static/js/main.a10537e7.js"
   ]
 }
