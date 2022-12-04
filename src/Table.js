@@ -9,31 +9,28 @@ const Table = ({ data, columns, defaultSort, setSelectedRows, selectedRows }) =>
   const [rowSelection, setRowSelection] = React.useState({});
 
   React.useEffect(() => {
-    // console.log(rowSelection);
     setSelectedRows(Object.keys(rowSelection).map((idx) => data[parseInt(idx)].id));
-    // console.log(selectedRows);
-    // console.log(Object.fromEntries(selectedRows.map((id) => [data.findIndex((d) => d.id === id), true])));
-    // setRowSelection(Object.fromEntries(selectedRows.map((id) => [data.findIndex((d) => d.id === id), true])));
   }, [rowSelection]);
 
   const table = useReactTable({
     data,
     columns,
-    initialState: {
-      // rowSelection: Object.fromEntries(selectedRows.map((id) => [data.findIndex((d) => d.id === id), true])),
-    },
     state: {
       sorting,
       rowSelection,
     },
-    // autoResetAll: false,
-    // autoResetSelectedRows: false,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     debugTable: process.env.NODE_ENV === "development",
   });
+
+  React.useEffect(() => {
+    // When data changes, find new indices for currently selected rows and set them selected.
+    const newRowSelection = Object.fromEntries(selectedRows.map((id) => [data.findIndex((d) => d.id === id), true]));
+    table.setRowSelection(newRowSelection);
+  }, [data]);
 
   return (
     <div className="w-100">
