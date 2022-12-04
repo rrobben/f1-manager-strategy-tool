@@ -212,45 +212,58 @@ function App() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-12 col-lg-4 col-xl-3">
-          <select className="form-select my-2" value={track} onChange={(e) => (window.location.search = `?gp=${e.target.value}`)}>
-            {TRACKS.map((t) => (
-              <option key={t} value={t}>
-                {t
-                  .split("_")
-                  .map((w) => w[0].toUpperCase() + w.slice(1))
-                  .join(" ")}
-              </option>
-            ))}
-          </select>
-          <label className="w-100 mb-3">
-            Laps remaining
-            <input type="number" min={1} max={TRACK_LAPS[track]} value={laps} onChange={handleLapsChange} className="form-control" />
-          </label>
-          {Object.keys(tires).flatMap((k) =>
-            (tires[k] || []).map((t, i) => (
-              <div className="row mb-1">
-                <div className="col-6">
-                  <label className="w-100 vertical-align-sub" key={`${k}.${i}`}>
-                    <input
-                      type="checkbox"
-                      className="form-check-inline mr-1 vertical-align-middle"
-                      checked={t.available}
-                      onChange={(e) => handleTireChange(k, i, "available", e.target.checked)}
-                    />{" "}
-                    <span className={`badge tyre-badge ${k.toLowerCase()} rounded-pill mr-1 bg-${getTyreBadge(k.toUpperCase(), t.cond)}`}>{k.toUpperCase()}</span>
-                  </label>
+        <div className="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+          <div className="row">
+            <div className="col-12 col-xl-6">
+              <label className="w-100 mb-3">
+                Track
+                <select className="form-select" value={track} onChange={(e) => (window.location.search = `?gp=${e.target.value}`)}>
+                  {TRACKS.map((t) => (
+                    <option key={t} value={t}>
+                      {t
+                        .split("_")
+                        .map((w) => w[0].toUpperCase() + w.slice(1))
+                        .join(" ")}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <div className="col-12 col-xl-6">
+              <label className="w-100 mb-3">
+                Laps remaining
+                <input type="number" min={1} max={TRACK_LAPS[track]} value={laps} onChange={handleLapsChange} className="form-control" />
+              </label>
+            </div>
+          </div>
+          <div className="row mb-3">
+            {Object.keys(tires).flatMap((k) =>
+              (tires[k] || []).map((t, i) => (
+                <div key={`${k}.${i}`} className="col-6 col-sm-12 col-xl-6 my-1">
+                  <div className="row">
+                    <div className="col-6">
+                      <label className="w-100 vertical-align-sub" key={`${k}.${i}`}>
+                        <input
+                          type="checkbox"
+                          className="form-check-inline mr-1 vertical-align-middle"
+                          checked={t.available}
+                          onChange={(e) => handleTireChange(k, i, "available", e.target.checked)}
+                        />{" "}
+                        <span className={`badge tyre-badge ${k.toLowerCase()} rounded-pill mr-1 bg-${getTyreBadge(k.toUpperCase(), t.cond)}`}>{k.toUpperCase()}</span>
+                      </label>
+                    </div>
+                    <div className="col-6">
+                      <input type="number" min={1} max={100} className="form-control" value={t.cond} onChange={(e) => handleTireChange(k, i, "cond", e.target.value)} />
+                    </div>
+                  </div>
                 </div>
-                <div className="col-6">
-                  <input type="number" min={1} max={100} className="form-control" value={t.cond} onChange={(e) => handleTireChange(k, i, "cond", e.target.value)} />
-                </div>
-              </div>
-            ))
-          )}
+              ))
+            )}
+          </div>
           <Table key={fastestTime} data={strategies} columns={columns} defaultSort={[{ id: "time", desc: false }]} setSelectedRows={setSelectedRows} selectedRows={selectedRows} />
         </div>
-        <div className="col-12 col-lg-8 col-xl-9">
-          <h4 className="text-center mt-3">Expected lap times (ignoring pit stop time loss, fuel and track evolution)</h4>
+        <div className="col-12 col-sm-6 col-md-8 col-lg-9 col-xl-9">
+          <h5 className="text-center mt-3">Expected lap times (ignoring pit stop time loss, fuel and track evolution)</h5>
           <canvas id="chart"></canvas>
         </div>
       </div>
