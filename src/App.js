@@ -177,14 +177,14 @@ function App() {
       {
         header: "Optimal Pit laps",
         accessorFn: ({ pit = [] }) => {
-          let total = 0;
+          let total = TRACK_LAPS[track] - laps;
           return pit.map((r) => (total += r));
         },
         classes: "text-end font-family-monospace",
         headerClasses: "text-end",
       },
     ],
-    [fastestTime]
+    [fastestTime, laps, track]
   );
 
   const handleLapsChange = (e) => {
