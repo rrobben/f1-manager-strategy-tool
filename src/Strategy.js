@@ -77,7 +77,7 @@ const TRACK_TIRE_PARAMS = {
   emilia_romagna: {
     lapTime: { h: 79.289, m: 79.022, s: 78.741 },
     competitiveLaps: { h: 46, m: 33, s: 22 },
-    averageDeg: { h: 0.032, m: 0.045, s: 0.07 },
+    averageDeg: { h: 0.035, m: 0.05, s: 0.08 },
   },
   miami: {
     lapTime: { h: 92.848, m: 92.42, s: 91.985 },
@@ -208,7 +208,7 @@ const TRACK_PIT_LOSS = {
   bahrain: 20,
   saudi_arabia: 17,
   australia: 19,
-  emilia_romagna: 26,
+  emilia_romagna: 25,
   miami: 22,
 };
 
