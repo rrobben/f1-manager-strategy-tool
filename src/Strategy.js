@@ -92,7 +92,7 @@ const TRACK_TIRE_PARAMS = {
   spain: {
     lapTime: { h: 82.607, m: 82.275, s: 81.868 },
     competitiveLaps: { h: 40, m: 34, s: 25 },
-    averageDeg: { h: 0.04, m: 0.05, s: 0.07 },
+    averageDeg: { h: 0.04, m: 0.05, s: 0.08 },
   },
 };
 
